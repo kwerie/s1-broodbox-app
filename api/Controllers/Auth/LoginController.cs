@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace api.Controllers.Auth;
 
 [ApiController]
-[Route("login")]
+[Route("auth/login")]
 public class LoginController(
     BroodboxDbContext dbContext,
     IPasswordHasher<User> passwordHasher,
