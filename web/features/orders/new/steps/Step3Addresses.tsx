@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useTransition } from "react";
-import { ArrowLeft, Pencil } from "lucide-react";
+import { ReactNode, useState, useTransition } from "react";
+import { ArrowLeft, FileText, Truck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -17,24 +17,31 @@ type Slot = "invoice" | "shipping";
 
 function AddressSlotCard({
     title,
+    icon,
     address,
+    companyName,
     onChange,
 }: {
     title: string;
+    icon: ReactNode;
     address: Address | null;
+    companyName: string;
     onChange: () => void;
 }) {
     return (
         <Card>
             <CardHeader className="flex flex-row items-center justify-between border-b">
-                <CardTitle>{title}</CardTitle>
+                <CardTitle className="flex items-center gap-2">
+                    {icon}
+                    {title}
+                </CardTitle>
                 <Button variant="ghost" size="sm" onClick={onChange}>
-                    <Pencil /> Wijzigen
+                    Wijzigen
                 </Button>
             </CardHeader>
             <CardContent>
                 {address ? (
-                    <AddressLines address={address} />
+                    <AddressLines address={address} companyName={companyName} />
                 ) : (
                     <p className="text-sm text-muted-foreground">Nog geen adres gekozen.</p>
                 )}
@@ -48,6 +55,7 @@ function AddressPickerDialog({
     onOpenChange,
     title,
     addresses,
+    companyName,
     selectedId,
     onSelect,
 }: {
@@ -55,6 +63,7 @@ function AddressPickerDialog({
     onOpenChange: (open: boolean) => void;
     title: string;
     addresses: Address[];
+    companyName: string;
     selectedId: number | null;
     onSelect: (id: number) => void;
 }) {
@@ -80,7 +89,7 @@ function AddressPickerDialog({
                                 address.id === selectedId && "border-primary ring-1 ring-primary",
                             )}
                         >
-                            <AddressLines address={address} />
+                            <AddressLines address={address} companyName={companyName} />
                         </button>
                     ))}
                 </div>
@@ -123,8 +132,20 @@ export function Step3Addresses() {
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
                 <div className="flex flex-col gap-6 lg:col-span-2">
                     <div className="grid gap-4 sm:grid-cols-2">
-                        <AddressSlotCard title="Factuuradres" address={invoice} onChange={() => setPicker("invoice")} />
-                        <AddressSlotCard title="Bezorgadres" address={shipping} onChange={() => setPicker("shipping")} />
+                        <AddressSlotCard
+                            title="Factuuradres"
+                            icon={<FileText className="h-4 w-4" />}
+                            address={invoice}
+                            companyName={state.companyName}
+                            onChange={() => setPicker("invoice")}
+                        />
+                        <AddressSlotCard
+                            title="Bezorgadres"
+                            icon={<Truck className="h-4 w-4" />}
+                            address={shipping}
+                            companyName={state.companyName}
+                            onChange={() => setPicker("shipping")}
+                        />
                     </div>
                     <AddressBook />
                 </div>
@@ -146,6 +167,7 @@ export function Step3Addresses() {
                 onOpenChange={(open) => !open && setPicker(null)}
                 title={picker === "invoice" ? "Kies factuuradres" : "Kies bezorgadres"}
                 addresses={state.addresses}
+                companyName={state.companyName}
                 selectedId={picker === "invoice" ? state.invoiceAddressId : state.shippingAddressId}
                 onSelect={pick}
             />

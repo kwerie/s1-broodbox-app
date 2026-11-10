@@ -56,7 +56,7 @@ export function Step5Confirmation() {
                 <Card className="w-full text-left">
                     <CardContent className="flex flex-col gap-2">
                         <p className="text-sm font-medium">We bezorgen het hier</p>
-                        <AddressLines address={order.deliveryAddress} />
+                        <AddressLines address={order.deliveryAddress} companyName={order.companyName} />
                     </CardContent>
                 </Card>
             )}

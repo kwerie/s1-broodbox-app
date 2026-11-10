@@ -15,6 +15,7 @@ export type RecipientDraft = {
 
 export type WizardState = {
     draftId: number;
+    companyName: string;
     step: number;
     dishes: DishLine[];
     recipients: RecipientDraft[];
@@ -64,6 +65,7 @@ export type WizardInit = {
 function buildInitialState({ draft, dishes, allergies, addresses }: WizardInit): WizardState {
     return {
         draftId: draft.id,
+        companyName: draft.companyName,
         step: 1,
         dishes: draft.dishes.map((orderDish) => ({
             dishId: orderDish.dish.id,

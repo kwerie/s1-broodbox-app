@@ -167,11 +167,19 @@ export function Step4Review() {
                         <CardContent className="grid gap-6 sm:grid-cols-2">
                             <div className="flex flex-col gap-1">
                                 <p className="text-sm font-medium">Factuuradres</p>
-                                {invoice ? <AddressLines address={invoice} /> : <p className="text-sm text-muted-foreground">—</p>}
+                                {invoice ? (
+                                    <AddressLines address={invoice} companyName={state.companyName} />
+                                ) : (
+                                    <p className="text-sm text-muted-foreground">—</p>
+                                )}
                             </div>
                             <div className="flex flex-col gap-1">
                                 <p className="text-sm font-medium">Bezorgadres</p>
-                                {shipping ? <AddressLines address={shipping} /> : <p className="text-sm text-muted-foreground">—</p>}
+                                {shipping ? (
+                                    <AddressLines address={shipping} companyName={state.companyName} />
+                                ) : (
+                                    <p className="text-sm text-muted-foreground">—</p>
+                                )}
                             </div>
                         </CardContent>
                     </Card>
