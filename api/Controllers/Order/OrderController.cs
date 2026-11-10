@@ -55,6 +55,21 @@ public class OrderController(
         return draft.AsDto();
     }
 
+    [Authorize(Roles = "customer-service")]
+    [HttpPost("{orderId:int}/accept")]
+    public async Task<ActionResult<OrderDto>> AcceptOrderAsync(int orderId)
+    {
+        try
+        {
+            var accepted = await _orderService.AcceptOrderAsync(orderId);
+            return accepted is null ? NotFound() : accepted.AsDto();
+        }
+        catch (InvalidOperationException exception)
+        {
+            return BadRequest(new { message = exception.Message });
+        }
+    }
+
     [Authorize(Roles = "customer")]
     [HttpPatch("{orderId:int}")]
     public async Task<ActionResult<OrderDto>> UpdateOrderAsync(int orderId, [FromBody] UpdateOrderRequest request)

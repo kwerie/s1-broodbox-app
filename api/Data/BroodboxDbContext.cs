@@ -72,6 +72,11 @@ public class BroodboxDbContext(DbContextOptions<BroodboxDbContext> options) : Db
             .IsUnique();
 
         modelBuilder.Entity<Order>()
+            .HasIndex(order => order.CustomerId)
+            .IsUnique()
+            .HasFilter("\"Status\" = 'Draft'");
+
+        modelBuilder.Entity<Order>()
             .HasOne(order => order.Customer)
             .WithMany(customer => customer.Orders)
             .HasForeignKey(order => order.CustomerId)

@@ -23,6 +23,24 @@ public class OrderService(
         return _orderRepository.GetOrCreateDraftAsync(customerId);
     }
 
+    public async Task<Order?> AcceptOrderAsync(int orderId)
+    {
+        var order = await _orderRepository.GetTrackedByIdAsync(orderId);
+        if (order is null)
+        {
+            return null;
+        }
+
+        if (order.Status != OrderStatus.Received)
+        {
+            throw new InvalidOperationException("Alleen ontvangen bestellingen kunnen worden geaccepteerd.");
+        }
+
+        order.Status = OrderStatus.Accepted;
+        await _orderRepository.SaveAsync();
+        return await _orderRepository.GetOrderAsync(orderId, null);
+    }
+
     public async Task<Order?> UpdateDraftAsync(int orderId, int customerId, UpdateOrderRequest request)
     {
         var draft = await _orderRepository.GetTrackedDraftAsync(orderId, customerId);

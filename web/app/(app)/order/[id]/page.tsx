@@ -1,7 +1,8 @@
 import { notFound } from "next/navigation";
-import { requireAuth } from "@/lib/auth/guard";
+import { getRole, requireAuth } from "@/lib/auth/guard";
 import { getOrder } from "@/features/orders/getOrder";
 import { OrderDetail } from "@/features/orders/OrderDetail/OrderDetail";
+import { OrderStatus } from "@/lib/api/dtos";
 
 export const instant = false;
 
@@ -15,7 +16,9 @@ export default async function OrderDetailPage({ params }: PageProps<"/order/[id]
         notFound();
     }
 
-    const order = await getOrder(orderId);
+    const [order, role] = await Promise.all([getOrder(orderId), getRole()]);
 
-    return <OrderDetail order={order} />;
+    const canAccept = role === "customer-service" && order.status === OrderStatus.Received;
+
+    return <OrderDetail order={order} canAccept={canAccept} />;
 }

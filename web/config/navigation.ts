@@ -12,7 +12,7 @@ export const NAV_ITEMS: NavItem[] = [
         href: "/",
         visibleTo: ["customer", "customer-service"],
     },
-    { label: "Mijn bestellingen", href: "/orders", visibleTo: ["customer"] },
+    { label: "Mijn bestellingen", href: "/my-orders", visibleTo: ["customer"] },
     {
         label: "Bestellingen",
         href: "/orders",

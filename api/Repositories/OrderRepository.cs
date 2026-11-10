@@ -19,7 +19,14 @@ public class OrderRepository(
             query = query.Where(o => o.CustomerId == customerId);
         }
 
-        return await query.Take(limit).ToListAsync();
+        query = query.OrderByDescending(o => o.OrderedAt);
+
+        if (limit > 0)
+        {
+            query = query.Take(limit);
+        }
+
+        return await query.ToListAsync();
     }
 
     public async Task<Order?> GetOrderAsync(int orderId, int? customerId)
@@ -55,7 +62,17 @@ public class OrderRepository(
         };
 
         _dbContext.Orders.Add(draft);
-        await _dbContext.SaveChangesAsync();
+
+        try
+        {
+            await _dbContext.SaveChangesAsync();
+        }
+        catch (DbUpdateException)
+        {
+            _dbContext.Entry(draft).State = EntityState.Detached;
+            return await IncludeOrderDetails(_dbContext.Orders)
+                .FirstAsync(o => o.CustomerId == customerId && o.Status == OrderStatus.Draft);
+        }
 
         return await IncludeOrderDetails(_dbContext.Orders).FirstAsync(o => o.Id == draft.Id);
     }
@@ -67,6 +84,11 @@ public class OrderRepository(
             .Include(o => o.Recipients).ThenInclude(r => r.RecipientAllergies)
             .Include(o => o.Recipients).ThenInclude(r => r.RecipientPreferences)
             .FirstOrDefaultAsync(o => o.Id == orderId && o.CustomerId == customerId);
+    }
+
+    public Task<Order?> GetTrackedByIdAsync(int orderId)
+    {
+        return _dbContext.Orders.FirstOrDefaultAsync(o => o.Id == orderId);
     }
 
     public Task SaveAsync() => _dbContext.SaveChangesAsync();

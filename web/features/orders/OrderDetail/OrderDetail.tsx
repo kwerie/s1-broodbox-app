@@ -5,18 +5,22 @@ import { OrderStatusLabel, formatOrdeDate } from "../orderPresentation";
 import { OrderDishesCard } from "./OrderDishesCard";
 import { OrderRecipientsCard } from "./OrderRecipientsCard";
 import { DeliveryAddressCard } from "./DeliveryAddressCard";
+import { AcceptOrderButton } from "./AcceptOrderButton";
 
-export function OrderDetail({ order }: { order: Order }) {
+export function OrderDetail({ order, canAccept = false }: { order: Order; canAccept?: boolean }) {
     return (
         <div className="flex flex-col gap-6">
             <div className="flex flex-col gap-4">
-                <Link
-                    href="/"
-                    className="inline-flex w-fit items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
-                >
-                    <ArrowLeft className="h-4 w-4" />
-                    Terug
-                </Link>
+                <div className="flex items-center justify-between">
+                    <Link
+                        href="/"
+                        className="inline-flex w-fit items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
+                    >
+                        <ArrowLeft className="h-4 w-4" />
+                        Terug
+                    </Link>
+                    {canAccept && <AcceptOrderButton orderId={order.id} />}
+                </div>
                 <div className="flex flex-col gap-1">
                     <div className="flex items-center gap-3">
                         <h1 className="text-2xl font-bold">Bestelling #{order.orderNumber}</h1>

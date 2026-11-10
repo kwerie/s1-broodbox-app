@@ -12,4 +12,6 @@ public interface IOrderService
     Task<Order> GetOrCreateDraftAsync(int customerId);
 
     Task<Order?> UpdateDraftAsync(int orderId, int customerId, UpdateOrderRequest request);
+
+    Task<Order?> AcceptOrderAsync(int orderId);
 }

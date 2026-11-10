@@ -12,6 +12,8 @@ public interface IOrderRepository
 
     Task<Order?> GetTrackedDraftAsync(int orderId, int customerId);
 
+    Task<Order?> GetTrackedByIdAsync(int orderId);
+
     Task SaveAsync();
 
     Task<bool> AddressBelongsToCustomerAsync(int addressId, int customerId);

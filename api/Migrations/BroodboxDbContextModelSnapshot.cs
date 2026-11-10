@@ -240,7 +240,9 @@ namespace api.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomerId");
+                    b.HasIndex("CustomerId")
+                        .IsUnique()
+                        .HasFilter("\"Status\" = 'Draft'");
 
                     b.HasIndex("InvoiceAddressId");
 
