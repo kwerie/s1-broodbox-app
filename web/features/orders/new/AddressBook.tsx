@@ -136,27 +136,36 @@ export function AddressBook() {
                             <AddressLines address={address} companyName={state.companyName} />
 
                             <div className="flex flex-col items-start gap-1.5">
-                                {address.id === state.invoiceAddressId && (
-                                    <Badge variant="secondary" className="gap-1">
-                                        <FileText />
-                                        Factuuradres voor deze bestelling
-                                    </Badge>
+                                {(address.id === state.invoiceAddressId ||
+                                    address.id === state.shippingAddressId) && (
+                                    <div className="flex flex-wrap gap-1.5">
+                                        {address.id === state.invoiceAddressId && (
+                                            <Badge variant="secondary" className="gap-1">
+                                                <FileText />
+                                                Factuuradres voor deze bestelling
+                                            </Badge>
+                                        )}
+                                        {address.id === state.shippingAddressId && (
+                                            <Badge variant="secondary" className="gap-1">
+                                                <Truck />
+                                                Bezorgadres voor deze bestelling
+                                            </Badge>
+                                        )}
+                                    </div>
                                 )}
-                                {address.id === state.shippingAddressId && (
-                                    <Badge variant="secondary" className="gap-1">
-                                        <Truck />
-                                        Bezorgadres voor deze bestelling
-                                    </Badge>
-                                )}
-                                {address.isDefaultInvoice && (
-                                    <Badge variant="outline" className="text-muted-foreground">
-                                        Standaard factuuradres
-                                    </Badge>
-                                )}
-                                {address.isDefaultShipping && (
-                                    <Badge variant="outline" className="text-muted-foreground">
-                                        Standaard bezorgadres
-                                    </Badge>
+                                {(address.isDefaultInvoice || address.isDefaultShipping) && (
+                                    <div className="flex flex-wrap gap-1.5">
+                                        {address.isDefaultInvoice && (
+                                            <Badge variant="outline" className="text-muted-foreground">
+                                                Standaard factuuradres
+                                            </Badge>
+                                        )}
+                                        {address.isDefaultShipping && (
+                                            <Badge variant="outline" className="text-muted-foreground">
+                                                Standaard bezorgadres
+                                            </Badge>
+                                        )}
+                                    </div>
                                 )}
                             </div>
                         </div>
