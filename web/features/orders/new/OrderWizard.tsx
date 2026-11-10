@@ -3,6 +3,7 @@
 import { Address, Allergy, Dish, Order } from "@/lib/api/dtos";
 import { WizardProvider, useWizard } from "./WizardContext";
 import { Stepper } from "./Stepper";
+import { Step1Dishes } from "./steps/Step1Dishes";
 
 function StepPlaceholder({ step }: { step: number }) {
     return <div className="text-muted-foreground">Stap {step}</div>;
@@ -20,7 +21,7 @@ function WizardBody() {
                 </div>
             )}
 
-            {state.step === 1 && <StepPlaceholder step={1} />}
+            {state.step === 1 && <Step1Dishes />}
             {state.step === 2 && <StepPlaceholder step={2} />}
             {state.step === 3 && <StepPlaceholder step={3} />}
             {state.step === 4 && <StepPlaceholder step={4} />}
