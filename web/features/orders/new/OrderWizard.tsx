@@ -7,10 +7,7 @@ import { Step1Dishes } from "./steps/Step1Dishes";
 import { Step2Recipients } from "./steps/Step2Recipients";
 import { Step3Addresses } from "./steps/Step3Addresses";
 import { Step4Review } from "./steps/Step4Review";
-
-function StepPlaceholder({ step }: { step: number }) {
-    return <div className="text-muted-foreground">Stap {step}</div>;
-}
+import { Step5Confirmation } from "./steps/Step5Confirmation";
 
 function WizardBody() {
     const { state } = useWizard();
@@ -28,7 +25,7 @@ function WizardBody() {
             {state.step === 2 && <Step2Recipients />}
             {state.step === 3 && <Step3Addresses />}
             {state.step === 4 && <Step4Review />}
-            {state.step === 5 && <StepPlaceholder step={5} />}
+            {state.step === 5 && <Step5Confirmation />}
         </div>
     );
 }

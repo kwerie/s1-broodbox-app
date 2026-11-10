@@ -18,22 +18,22 @@ export type AddressInput = {
     city: string;
 };
 
-export function saveDishes(draftId: number, dishes: { dishId: number; quantity: number }[]) {
+export async function saveDishes(draftId: number, dishes: { dishId: number; quantity: number }[]) {
     return apiClient.patch<Order>(`/order/${draftId}`, { dishes });
 }
 
-export function saveRecipients(draftId: number, recipients: RecipientInput[]) {
+export async function saveRecipients(draftId: number, recipients: RecipientInput[]) {
     return apiClient.patch<Order>(`/order/${draftId}`, { recipients });
 }
 
-export function saveAddresses(
+export async function saveAddresses(
     draftId: number,
     addresses: { invoiceAddressId: number | null; deliveryAddressId: number | null },
 ) {
     return apiClient.patch<Order>(`/order/${draftId}`, addresses);
 }
 
-export function confirmOrder(draftId: number) {
+export async function confirmOrder(draftId: number) {
     return apiClient.patch<Order>(`/order/${draftId}`, { status: "Received" });
 }
 
