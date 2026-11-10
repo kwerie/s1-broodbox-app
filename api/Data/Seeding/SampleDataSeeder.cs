@@ -126,6 +126,18 @@ public class SampleDataSeeder(BroodboxDbContext dbContext)
             new Dish { Name = "Broodje Kaas", PreparationTime = 5, Price = 3.50m },
             new Dish { Name = "Broodje Kroket", PreparationTime = 6, Price = 3.75m },
             new Dish { Name = "Broodje Ham", PreparationTime = 5, Price = 3.95m },
+            new Dish { Name = "Yoghurt met granola", PreparationTime = 4, Price = 3.95m },
+            new Dish { Name = "Vers fruitsalade", PreparationTime = 5, Price = 4.25m },
+            new Dish { Name = "Croissant", PreparationTime = 3, Price = 2.50m },
+            new Dish { Name = "Wentelteefjes", PreparationTime = 10, Price = 5.50m },
+            new Dish { Name = "Omelet", PreparationTime = 8, Price = 4.75m },
+            new Dish { Name = "Havermout met fruit", PreparationTime = 6, Price = 3.75m },
+            new Dish { Name = "Tomatensoep", PreparationTime = 5, Price = 4.25m },
+            new Dish { Name = "Pompoensoep", PreparationTime = 5, Price = 4.50m },
+            new Dish { Name = "Caesarsalade", PreparationTime = 10, Price = 6.95m },
+            new Dish { Name = "Quiche Lorraine", PreparationTime = 12, Price = 5.75m },
+            new Dish { Name = "Kip wrap", PreparationTime = 8, Price = 5.25m },
+            new Dish { Name = "Pastasalade", PreparationTime = 9, Price = 5.95m },
         };
 
         return await UpsertAsync(
