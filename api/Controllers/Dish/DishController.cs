@@ -1,5 +1,5 @@
-using api.Dtos;
 using api.Extensions;
+using api.Responses;
 using api.Services.DishService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,9 +12,9 @@ public class DishController(IDishService _dishService) : ControllerBase
 {
     [Authorize(Roles = "customer,customer-service")]
     [HttpGet]
-    public async Task<IEnumerable<DishDto>> GetDishesAsync()
+    public async Task<IActionResult> GetDishesAsync()
     {
         var dishes = await _dishService.GetDishesAsync();
-        return dishes.Select(dish => dish.AsDto());
+        return JSend.Success(dishes.Select(dish => dish.AsDto()));
     }
 }

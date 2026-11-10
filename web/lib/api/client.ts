@@ -32,7 +32,8 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
         return undefined as T
     }
 
-    return (await response.json()) as T
+    const body = (await response.json()) as { data: T }
+    return body.data
 }
 
 export const apiClient = {

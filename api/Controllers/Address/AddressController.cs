@@ -1,5 +1,6 @@
 using api.Dtos;
 using api.Extensions;
+using api.Responses;
 using api.Services.AddressService;
 using api.Services.CustomerService;
 using Microsoft.AspNetCore.Authorization;
@@ -17,42 +18,44 @@ public class AddressController(
 ) : ControllerBase
 {
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<AddressResponse>>> GetAddressesAsync()
+    public async Task<IActionResult> GetAddressesAsync()
     {
         var customer = await _customerService.GetCustomerByIdAsync(User.GetUserId());
         if (customer is null)
         {
-            return Forbid();
+            return JSend.Fail(statusCode: StatusCodes.Status403Forbidden);
         }
 
         var addresses = await _addressService.GetAddressesAsync(customer.Id);
-        return Ok(addresses.Select(address => address.AsDto()));
+        return JSend.Success(addresses.Select(address => address.AsDto()));
     }
 
     [HttpPost]
-    public async Task<ActionResult<AddressResponse>> CreateAsync([FromBody] CreateAddressRequest request)
+    public async Task<IActionResult> CreateAsync([FromBody] CreateAddressRequest request)
     {
         var customer = await _customerService.GetCustomerByIdAsync(User.GetUserId());
         if (customer is null)
         {
-            return Forbid();
+            return JSend.Fail(statusCode: StatusCodes.Status403Forbidden);
         }
 
         var address = await _addressService.CreateAsync(customer.Id, request);
-        return address.AsDto();
+        return JSend.Success(address.AsDto());
     }
 
     [HttpPut("{id:int}")]
-    public async Task<ActionResult<AddressResponse>> UpdateAsync(int id, [FromBody] UpdateAddressRequest request)
+    public async Task<IActionResult> UpdateAsync(int id, [FromBody] UpdateAddressRequest request)
     {
         var customer = await _customerService.GetCustomerByIdAsync(User.GetUserId());
         if (customer is null)
         {
-            return Forbid();
+            return JSend.Fail(statusCode: StatusCodes.Status403Forbidden);
         }
 
         var address = await _addressService.UpdateAsync(id, customer.Id, request);
-        return address is null ? NotFound() : address.AsDto();
+        return address is null
+            ? JSend.Fail(statusCode: StatusCodes.Status404NotFound)
+            : JSend.Success(address.AsDto());
     }
 
     [HttpDelete("{id:int}")]
@@ -61,30 +64,34 @@ public class AddressController(
         var customer = await _customerService.GetCustomerByIdAsync(User.GetUserId());
         if (customer is null)
         {
-            return Forbid();
+            return JSend.Fail(statusCode: StatusCodes.Status403Forbidden);
         }
 
         try
         {
             var deleted = await _addressService.DeleteAsync(id, customer.Id);
-            return deleted ? NoContent() : NotFound();
+            return deleted ? JSend.Success() : JSend.Fail(statusCode: StatusCodes.Status404NotFound);
         }
         catch (DbUpdateException)
         {
-            return Conflict(new { message = "Dit adres is gekoppeld aan een bestelling en kan niet worden verwijderd." });
+            return JSend.Fail(
+                new { message = "Dit adres is gekoppeld aan een bestelling en kan niet worden verwijderd." },
+                StatusCodes.Status409Conflict);
         }
     }
 
     [HttpPatch("{id:int}/default")]
-    public async Task<ActionResult<AddressResponse>> SetDefaultAsync(int id, [FromBody] SetDefaultAddressRequest request)
+    public async Task<IActionResult> SetDefaultAsync(int id, [FromBody] SetDefaultAddressRequest request)
     {
         var customer = await _customerService.GetCustomerByIdAsync(User.GetUserId());
         if (customer is null)
         {
-            return Forbid();
+            return JSend.Fail(statusCode: StatusCodes.Status403Forbidden);
         }
 
         var address = await _addressService.SetDefaultAsync(id, customer.Id, request);
-        return address is null ? NotFound() : address.AsDto();
+        return address is null
+            ? JSend.Fail(statusCode: StatusCodes.Status404NotFound)
+            : JSend.Success(address.AsDto());
     }
 }

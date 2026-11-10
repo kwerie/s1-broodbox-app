@@ -1,5 +1,5 @@
-using api.Dtos;
 using api.Extensions;
+using api.Responses;
 using api.Services.AllergyService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,9 +12,9 @@ public class AllergyController(IAllergyService _allergyService) : ControllerBase
 {
     [Authorize(Roles = "customer,customer-service")]
     [HttpGet]
-    public async Task<IEnumerable<AllergyResponse>> GetAllergiesAsync()
+    public async Task<IActionResult> GetAllergiesAsync()
     {
         var allergies = await _allergyService.GetAllergiesAsync();
-        return allergies.Select(allergy => allergy.AsDto());
+        return JSend.Success(allergies.Select(allergy => allergy.AsDto()));
     }
 }
