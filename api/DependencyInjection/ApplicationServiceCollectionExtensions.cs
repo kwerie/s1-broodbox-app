@@ -1,4 +1,5 @@
 using api.Repositories;
+using api.Services.AddressService;
 using api.Services.AllergyService;
 using api.Services.CustomerService;
 using api.Services.DishService;
@@ -14,6 +15,7 @@ public static class ApplicationServiceCollectionExtensions
         services.AddScoped<IOrderService, OrderService>();
         services.AddScoped<IDishService, DishService>();
         services.AddScoped<IAllergyService, AllergyService>();
+        services.AddScoped<IAddressService, AddressService>();
 
         return services;
     }
@@ -24,6 +26,7 @@ public static class ApplicationServiceCollectionExtensions
         services.AddScoped<IOrderRepository, OrderRepository>();
         services.AddScoped<IDishRepository, DishRepository>();
         services.AddScoped<IAllergyRepository, AllergyRepository>();
+        services.AddScoped<IAddressRepository, AddressRepository>();
 
         return services;
     }

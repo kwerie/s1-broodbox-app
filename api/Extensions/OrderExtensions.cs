@@ -31,7 +31,9 @@ public static class OrderExtensions
             address.HouseNumber,
             address.Addition,
             address.PostalCode,
-            address.City
+            address.City,
+            address.IsDefaultInvoice,
+            address.IsDefaultShipping
         );
     }
 
