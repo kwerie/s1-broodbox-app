@@ -1,4 +1,5 @@
 using api.Models;
+using api.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Data.Seeding;
@@ -106,7 +107,7 @@ public class SampleDataSeeder(BroodboxDbContext dbContext)
         return new Order
         {
             Customer = customer,
-            OrderNumber = placedAt.ToString("ddMMyy-HHmmss"),
+            OrderNumber = OrderNumberGenerator.Generate(placedAt),
             OrderedAt = placedAt,
             Status = order.Status,
             InvoiceAddress = address,
