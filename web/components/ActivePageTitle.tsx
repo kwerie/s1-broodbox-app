@@ -1,20 +1,18 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+
+function titleFromPathname(pathname: string) {
+    const segments = pathname.split("/").filter(Boolean);
+    const lastSegment = segments[segments.length - 1] || "Home";
+    const formatted = lastSegment.replace(/-/g, " ");
+    return formatted.charAt(0).toUpperCase() + formatted.slice(1);
+}
 
 export function ActivePageTitle() {
     const pathname = usePathname();
-    const [title, setTitle] = useState("");
-
-    useEffect(() => {
-        const pathSegments = pathname.split("/").filter(Boolean);
-        const lastSegment = pathSegments[pathSegments.length - 1] || "Home";
-        const formattedTitle = lastSegment.replace(/-/g, " ");
-        setTitle(formattedTitle.charAt(0).toUpperCase() + formattedTitle.slice(1));
-    }, [pathname]);
 
     return (
-        <span className="font-semibold text-xl leading-[1em]">{title}</span>
+        <span className="font-semibold text-xl leading-[1em]">{titleFromPathname(pathname)}</span>
     );
 }
