@@ -5,5 +5,6 @@ public enum OrderStatus
     Received,
     Accepted,
     InPreparation,
-    Done
+    Done,
+    Draft
 }

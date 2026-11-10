@@ -11,6 +11,7 @@ public class OrderStatusConverter : ValueConverter<OrderStatus, string>
         [OrderStatus.Accepted] = "Accepted",
         [OrderStatus.InPreparation] = "In preparation",
         [OrderStatus.Done] = "Done",
+        [OrderStatus.Draft] = "Draft",
     };
 
     private static readonly IReadOnlyDictionary<string, OrderStatus> Values =
