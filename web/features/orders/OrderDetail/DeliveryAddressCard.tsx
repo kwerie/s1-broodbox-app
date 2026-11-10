@@ -4,6 +4,9 @@ import { Order } from "@/lib/api/dtos";
 
 export function DeliveryAddressCard({ order }: { order: Order }) {
     const address = order.deliveryAddress;
+    if (!address) {
+        return null;
+    }
     const houseNumber = address.addition
         ? `${address.houseNumber} ${address.addition}`
         : `${address.houseNumber}`;

@@ -71,7 +71,7 @@ export type Order = {
     status: OrderStatus;
     dishes: OrderDish[];
     recipients: Recipient[];
-    deliveryAddress: Address;
-    invoiceAddress: Address;
+    deliveryAddress: Address | null;
+    invoiceAddress: Address | null;
     note: string | null;
 };
