@@ -1,5 +1,7 @@
 using api.Repositories;
+using api.Services.AllergyService;
 using api.Services.CustomerService;
+using api.Services.DishService;
 using api.Services.OrderService;
 
 namespace api.DependencyInjection;
@@ -10,6 +12,8 @@ public static class ApplicationServiceCollectionExtensions
     {
         services.AddScoped<ICustomerService, CustomerService>();
         services.AddScoped<IOrderService, OrderService>();
+        services.AddScoped<IDishService, DishService>();
+        services.AddScoped<IAllergyService, AllergyService>();
 
         return services;
     }
@@ -18,6 +22,8 @@ public static class ApplicationServiceCollectionExtensions
     {
         services.AddScoped<ICustomerRepository, CustomerRepository>();
         services.AddScoped<IOrderRepository, OrderRepository>();
+        services.AddScoped<IDishRepository, DishRepository>();
+        services.AddScoped<IAllergyRepository, AllergyRepository>();
 
         return services;
     }
