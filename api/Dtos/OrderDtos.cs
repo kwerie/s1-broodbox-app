@@ -16,10 +16,6 @@ public record OrderDishDto(
     [Required] int Quantity
 );
 
-public record CreateOrderRequest(
-        [MinLength(1)] OrderDishDto[] Dishes
-);
-
 public record RecipientDto(
     [Required] string Name,
     [Required] string LockerNumber,

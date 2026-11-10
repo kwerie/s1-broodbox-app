@@ -1,11 +1,9 @@
 using api.Dtos;
 using api.Extensions;
-using api.Responses;
 using api.Services.CustomerService;
 using api.Services.OrderService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OrderModel = api.Models.Order;
 
 namespace api.Controllers.Order;
 
@@ -45,28 +43,37 @@ public class OrderController(
 
     [Authorize(Roles = "customer")]
     [HttpPost]
-    public SuccessResponse<object> CreateOrderAsync([FromBody] CreateOrderRequest request)
+    public async Task<ActionResult<OrderDto>> CreateDraftAsync()
     {
-        return JSend.Success();
-    }
-
-    [Authorize(Roles = "customer-service,customer")]
-    [HttpPatch("{orderId}")]
-    public JSendResponse<string> UpdateOrderAsync(string orderId, [FromBody] UpdateOrderRequest order)
-    {
-        var isCustomerService = User.IsInRole("customer-service");
-
-        if (order.Status != null && isCustomerService)
+        var customer = await _customerService.GetCustomerByIdAsync(User.GetUserId());
+        if (customer is null)
         {
-            // TODO: update order status
-            return JSend.Success<string>(null, StatusCodes.Status204NoContent);
+            return Forbid();
         }
 
-        var userId = User.GetUserId();
+        var draft = await _orderService.GetOrCreateDraftAsync(customer.Id);
+        return draft.AsDto();
+    }
 
-        // Verify the order is owned by the user or the user has customer-service role.
-        // Customer can set recipients, dishes, delivery + invoice address. Only customer-service can set the status
-        return JSend.Success<string>(null, StatusCodes.Status204NoContent);
+    [Authorize(Roles = "customer")]
+    [HttpPatch("{orderId:int}")]
+    public async Task<ActionResult<OrderDto>> UpdateOrderAsync(int orderId, [FromBody] UpdateOrderRequest request)
+    {
+        var customer = await _customerService.GetCustomerByIdAsync(User.GetUserId());
+        if (customer is null)
+        {
+            return Forbid();
+        }
+
+        try
+        {
+            var updated = await _orderService.UpdateDraftAsync(orderId, customer.Id, request);
+            return updated is null ? NotFound() : updated.AsDto();
+        }
+        catch (InvalidOperationException exception)
+        {
+            return BadRequest(new { message = exception.Message });
+        }
     }
 }
 
