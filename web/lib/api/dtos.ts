@@ -60,6 +60,8 @@ export type Address = {
     addition: string | null;
     postalCode: string;
     city: string;
+    isDefaultInvoice: boolean;
+    isDefaultShipping: boolean;
 };
 
 export type Order = {
