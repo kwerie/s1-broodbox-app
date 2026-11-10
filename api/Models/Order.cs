@@ -4,6 +4,12 @@ public class Order
 {
     public int Id { get; set; }
 
+    public string OrderNumber { get; set; } = null!;
+
+    public DateTime OrderedAt { get; set; }
+
+    public OrderStatus Status { get; set; }
+
     public int InvoiceAddressId { get; set; }
 
     public int ShippingAddressId { get; set; }

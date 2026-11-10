@@ -1,3 +1,4 @@
+using api.Data.Conversions;
 using api.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -43,6 +44,32 @@ public class BroodboxDbContext(DbContextOptions<BroodboxDbContext> options) : Db
             .WithMany(customer => customer.Addresses)
             .HasForeignKey(address => address.CustomerId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<Dish>()
+            .Property(dish => dish.Price)
+            .HasPrecision(10, 2);
+
+        modelBuilder.Entity<OrderDish>()
+            .Property(orderDish => orderDish.Quantity)
+            .HasDefaultValue(1);
+
+        modelBuilder.Entity<Allergy>()
+            .Property(allergy => allergy.Type)
+            .HasConversion(new AllergyTypeConverter())
+            .HasMaxLength(20);
+
+        modelBuilder.Entity<Order>()
+            .Property(order => order.Status)
+            .HasConversion(new OrderStatusConverter())
+            .HasMaxLength(20);
+
+        modelBuilder.Entity<Order>()
+            .Property(order => order.OrderNumber)
+            .HasMaxLength(13);
+
+        modelBuilder.Entity<Order>()
+            .HasIndex(order => order.OrderNumber)
+            .IsUnique();
 
         modelBuilder.Entity<Order>()
             .HasOne(order => order.Customer)

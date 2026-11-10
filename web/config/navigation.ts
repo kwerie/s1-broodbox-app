@@ -8,22 +8,22 @@ export type NavItem = {
 
 export const NAV_ITEMS: NavItem[] = [
     {
-        label: "Dashboard",
+        label: "Home",
         href: "/",
         visibleTo: ["customer", "customer-service"],
     },
     { label: "Mijn bestellingen", href: "/orders", visibleTo: ["customer"] },
     {
-        label: "Allergieën",
-        href: "/preferences",
-        visibleTo: ["customer-service"],
-    },
-    { label: "Klanten", href: "/customers", visibleTo: ["customer-service"] },
-    {
         label: "Bestellingen",
         href: "/orders",
         visibleTo: ["customer-service"],
     },
+    {
+        label: "Allergieën",
+        href: "/allergies",
+        visibleTo: ["customer-service"],
+    },
+    { label: "Klanten", href: "/customers", visibleTo: ["customer-service"] },
     {
         label: "Gerechten",
         href: "/dishes",

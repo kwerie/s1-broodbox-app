@@ -2,6 +2,7 @@ import { redirect } from "next/navigation"
 import { connection } from "next/server"
 import { getToken } from "./session"
 import { getRoleFromToken, type Role } from "./role"
+import { getUserFromToken, type AuthUser } from "./user"
 import { isTokenExpired } from "./token"
 
 export async function isLoggedIn(): Promise<boolean> {
@@ -27,6 +28,15 @@ export async function getRole(): Promise<Role | null> {
 
 export async function hasRole(role: Role): Promise<boolean> {
     return (await getRole()) === role
+}
+
+export async function getCurrentUser(): Promise<AuthUser | null> {
+    await connection()
+    const token = await getToken()
+    if (token === undefined || isTokenExpired(token)) {
+        return null
+    }
+    return getUserFromToken(token)
 }
 
 export async function requireRole(...roles: Role[]): Promise<void> {

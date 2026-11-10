@@ -2,6 +2,13 @@ import { redirect } from "next/navigation"
 import { clearToken, getToken } from "@/lib/auth/session"
 import { getApiUrl } from "./config"
 
+export class ApiError extends Error {
+    constructor(readonly status: number) {
+        super(`API request failed with status ${status}`)
+        this.name = "ApiError"
+    }
+}
+
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
     const token = await getToken()
     const response = await fetch(`${getApiUrl()}${path}`, {
@@ -18,7 +25,7 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
         redirect("/login")
     }
     if (!response.ok) {
-        throw new Error(`API request failed with status ${response.status}`)
+        throw new ApiError(response.status)
     }
 
     return (await response.json()) as T

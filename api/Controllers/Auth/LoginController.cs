@@ -18,7 +18,9 @@ public class LoginController(
     [HttpPost]
     public async Task<ActionResult<AuthResponse>> Login(LoginRequest request)
     {
-        var user = await dbContext.Users.SingleOrDefaultAsync(user => user.Email == request.Email);
+        var user = await dbContext.Users
+            .Include(user => user.Customer)
+            .SingleOrDefaultAsync(user => user.Email == request.Email);
         if (user is null)
         {
             return Unauthorized();

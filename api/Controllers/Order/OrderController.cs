@@ -1,6 +1,8 @@
 using api.Dtos;
 using api.Extensions;
 using api.Responses;
+using api.Services.CustomerService;
+using api.Services.OrderService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OrderModel = api.Models.Order;
@@ -9,16 +11,36 @@ namespace api.Controllers.Order;
 
 [ApiController]
 [Route("order")]
-public class OrderController() : ControllerBase
+public class OrderController(
+    IOrderService _orderService,
+    ICustomerService _customerService
+) : ControllerBase
 {
     /**
      * Returns a list of all orders in the system which have not been processed yet.
      */
-    [Authorize(Roles = "customer-service")]
+    [Authorize(Roles = "customer-service,customer")]
     [HttpGet]
-    public async Task<IEnumerable<OrderModel>> GetOrdersAsync()
+    public async Task<IEnumerable<OrderDto>> GetOrdersAsync([FromQuery] int limit = 5)
     {
-        return [];
+        var customer = await _customerService.GetCustomerByIdAsync(User.GetUserId());
+        var orders = await _orderService.GetOrdersAsync(customer?.Id, limit);
+        return orders.Select(o => o.AsDto());
+    }
+
+    [Authorize(Roles = "customer-service,customer")]
+    [HttpGet("{orderId:int}")]
+    public async Task<ActionResult<OrderDto>> GetOrderAsync(int orderId)
+    {
+        var customer = await _customerService.GetCustomerByIdAsync(User.GetUserId());
+        var order = await _orderService.GetOrderAsync(orderId, customer?.Id);
+
+        if (order is null)
+        {
+            return NotFound();
+        }
+
+        return order.AsDto();
     }
 
     [Authorize(Roles = "customer")]

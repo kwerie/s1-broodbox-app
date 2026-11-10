@@ -6,8 +6,7 @@ public class Allergy
 {
     public int Id { get; set; }
 
-    [MaxLength(50)]
-    public string Type { get; set; } = string.Empty;
+    public AllergyType Type { get; set; }
 
     [MaxLength(50)]
     public string Description { get; set; } = string.Empty;

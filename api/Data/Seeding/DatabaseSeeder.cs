@@ -7,9 +7,16 @@ namespace api.Data.Seeding;
 public class DatabaseSeeder(
     BroodboxDbContext dbContext,
     IPasswordHasher<User> passwordHasher,
-    IReadOnlyList<SeedUser> seedUsers)
+    IReadOnlyList<SeedUser> seedUsers,
+    SampleDataSeeder sampleDataSeeder)
 {
     public async Task SeedAsync()
+    {
+        await SeedUsersAsync();
+        await sampleDataSeeder.SeedAsync();
+    }
+
+    private async Task SeedUsersAsync()
     {
         foreach (var seedUser in seedUsers)
         {

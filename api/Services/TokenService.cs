@@ -21,6 +21,11 @@ public class TokenService(JwtOptions options) : ITokenService
             new(ClaimTypes.Role, user.Role)
         };
 
+        if (user.Customer is not null)
+        {
+            claims.Add(new Claim(JwtRegisteredClaimNames.Name, user.Customer.Name));
+        }
+
         var token = new JwtSecurityToken(
             issuer: options.Issuer,
             audience: options.Audience,

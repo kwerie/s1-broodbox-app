@@ -8,6 +8,8 @@ public class Dish
 
     public int PreparationTime { get; set; }
 
+    public decimal Price { get; set; }
+
     [MaxLength(255)]
     public string Name { get; set; } = string.Empty;
 

@@ -24,10 +24,14 @@ public static class PersistenceServiceCollectionExtensions
     {
         var seedUsers = configuration.GetSection("SeedUsers").Get<List<SeedUser>>() ?? [];
 
+        services.AddScoped(serviceProvider => new SampleDataSeeder(
+            serviceProvider.GetRequiredService<BroodboxDbContext>()));
+
         services.AddScoped(serviceProvider => new DatabaseSeeder(
             serviceProvider.GetRequiredService<BroodboxDbContext>(),
             serviceProvider.GetRequiredService<IPasswordHasher<User>>(),
-            seedUsers));
+            seedUsers,
+            serviceProvider.GetRequiredService<SampleDataSeeder>()));
 
         return services;
     }

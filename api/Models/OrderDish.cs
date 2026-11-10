@@ -9,6 +9,8 @@ public class OrderDish
 
     public int DishId { get; set; }
 
+    public int Quantity { get; set; }
+
     public Order Order { get; set; } = null!;
     public Dish Dish { get; set; } = null!;
 }

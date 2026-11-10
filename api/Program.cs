@@ -13,6 +13,8 @@ builder.Services.AddOpenApi();
 builder.Services.AddPersistence(builder.Configuration);
 builder.Services.AddJwtAuthentication(builder.Configuration);
 builder.Services.AddDatabaseSeeding(builder.Configuration);
+builder.Services.AddRepositories();
+builder.Services.AddApplicationServices();
 
 builder.Services.AddCors(options =>
     options.AddDefaultPolicy(policy =>
