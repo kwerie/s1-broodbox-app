@@ -20,18 +20,11 @@ public record CreateOrderRequest(
         [MinLength(1)] OrderDishDto[] Dishes
 );
 
-public record PreferenceDto(
-    int? Id,
-    [Required] string Description
-);
-
-
 public record RecipientDto(
     [Required] string Name,
-    [Required] string Email,
-    [Required] string Phone,
+    [Required] string LockerNumber,
     int[]? AllergyIds,
-    PreferenceDto[]? Preferences
+    string[]? Preferences
 );
 
 public record UpdateOrderRequest(
