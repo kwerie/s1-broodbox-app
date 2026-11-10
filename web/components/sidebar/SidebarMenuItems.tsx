@@ -9,6 +9,7 @@ import {
     HomeIcon,
     UserIcon,
     ShoppingCartIcon,
+    PackageIcon,
     ForkKnifeIcon,
     NutIcon,
 } from "lucide-react";
@@ -19,6 +20,7 @@ const iconMap: Record<string, ReactNode> = {
     "/customers": <UserIcon className="h-4 w-4" />,
     "/order": <ShoppingCartIcon className="h-4 w-4" />,
     "/orders": <ShoppingCartIcon className="h-4 w-4" />,
+    "/my-orders": <PackageIcon className="h-4 w-4" />,
     "/dishes": <ForkKnifeIcon className="h-4 w-4" />,
     "/allergies": <NutIcon className="h-4 w-4" />,
 };
