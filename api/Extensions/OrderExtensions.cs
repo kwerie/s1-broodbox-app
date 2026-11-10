@@ -74,8 +74,8 @@ public static class OrderExtensions
             order.Status,
             [.. order.OrderDishes.Select(orderDish => orderDish.AsDto())],
             [.. order.Recipients.Select(recipient => recipient.AsDto())],
-            order.ShippingAddress.AsDto(),
-            order.InvoiceAddress.AsDto(),
+            order.ShippingAddress?.AsDto(),
+            order.InvoiceAddress?.AsDto(),
             order.Note?.Description
         );
     }

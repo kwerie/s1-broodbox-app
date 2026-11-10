@@ -65,7 +65,7 @@ public class BroodboxDbContext(DbContextOptions<BroodboxDbContext> options) : Db
 
         modelBuilder.Entity<Order>()
             .Property(order => order.OrderNumber)
-            .HasMaxLength(13);
+            .HasMaxLength(16);
 
         modelBuilder.Entity<Order>()
             .HasIndex(order => order.OrderNumber)
@@ -81,12 +81,14 @@ public class BroodboxDbContext(DbContextOptions<BroodboxDbContext> options) : Db
             .HasOne(order => order.InvoiceAddress)
             .WithMany()
             .HasForeignKey(order => order.InvoiceAddressId)
+            .IsRequired(false)
             .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<Order>()
             .HasOne(order => order.ShippingAddress)
             .WithMany()
             .HasForeignKey(order => order.ShippingAddressId)
+            .IsRequired(false)
             .OnDelete(DeleteBehavior.Restrict);
     }
 }

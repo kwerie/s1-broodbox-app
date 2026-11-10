@@ -51,8 +51,8 @@ public record OrderDto(
     OrderStatus Status,
     OrderDishResponse[] Dishes,
     RecipientResponse[] Recipients,
-    AddressResponse DeliveryAddress,
-    AddressResponse InvoiceAddress,
+    AddressResponse? DeliveryAddress,
+    AddressResponse? InvoiceAddress,
     string? Note
 );
 

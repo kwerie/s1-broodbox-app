@@ -219,18 +219,18 @@ namespace api.Migrations
                     b.Property<int>("CustomerId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("InvoiceAddressId")
+                    b.Property<int?>("InvoiceAddressId")
                         .HasColumnType("integer");
 
                     b.Property<string>("OrderNumber")
                         .IsRequired()
-                        .HasMaxLength(13)
-                        .HasColumnType("character varying(13)");
+                        .HasMaxLength(16)
+                        .HasColumnType("character varying(16)");
 
                     b.Property<DateTime>("OrderedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("ShippingAddressId")
+                    b.Property<int?>("ShippingAddressId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Status")
@@ -441,14 +441,12 @@ namespace api.Migrations
                     b.HasOne("api.Models.Address", "InvoiceAddress")
                         .WithMany()
                         .HasForeignKey("InvoiceAddressId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("api.Models.Address", "ShippingAddress")
                         .WithMany()
                         .HasForeignKey("ShippingAddressId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Customer");
 
