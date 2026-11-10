@@ -6,6 +6,7 @@ import { Stepper } from "./Stepper";
 import { Step1Dishes } from "./steps/Step1Dishes";
 import { Step2Recipients } from "./steps/Step2Recipients";
 import { Step3Addresses } from "./steps/Step3Addresses";
+import { Step4Review } from "./steps/Step4Review";
 
 function StepPlaceholder({ step }: { step: number }) {
     return <div className="text-muted-foreground">Stap {step}</div>;
@@ -26,7 +27,7 @@ function WizardBody() {
             {state.step === 1 && <Step1Dishes />}
             {state.step === 2 && <Step2Recipients />}
             {state.step === 3 && <Step3Addresses />}
-            {state.step === 4 && <StepPlaceholder step={4} />}
+            {state.step === 4 && <Step4Review />}
             {state.step === 5 && <StepPlaceholder step={5} />}
         </div>
     );
