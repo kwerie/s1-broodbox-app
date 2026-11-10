@@ -60,13 +60,14 @@ export type WizardInit = {
     dishes: Dish[];
     allergies: Allergy[];
     addresses: Address[];
+    initialStep: number;
 };
 
-function buildInitialState({ draft, dishes, allergies, addresses }: WizardInit): WizardState {
+function buildInitialState({ draft, dishes, allergies, addresses, initialStep }: WizardInit): WizardState {
     return {
         draftId: draft.id,
         companyName: draft.companyName,
-        step: 1,
+        step: Math.min(Math.max(initialStep, 1), 4),
         dishes: draft.dishes.map((orderDish) => ({
             dishId: orderDish.dish.id,
             quantity: orderDish.quantity,
